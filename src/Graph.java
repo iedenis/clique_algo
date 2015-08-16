@@ -278,6 +278,8 @@ import java.util.Vector;
 				for(int b=0;b<C1.size();b++) {
 					Clique c = C1.elementAt(b);
 					if (c.size()>=min_size) {
+						if (c.size() > biggest_Clique)
+							biggest_Clique = c.size();
 						os.println(count+", "+i+","+c.size()+", "+c.toFile());
 						count++;
 					}
