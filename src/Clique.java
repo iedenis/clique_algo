@@ -1,5 +1,3 @@
-package clique_algo;
-
 import java.util.Vector;
 
 /**
