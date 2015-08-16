@@ -33,6 +33,8 @@ public class Clique_Tester {
 			//printAll(c1);
 			if(out_file==null)  out_file = in_file+"_"+TH+"_"+minQ+"_"+maxQ+".csv";
 			G.All_Cliques_DFS(out_file,minQ,maxQ);
+			//Printing the number of edges of the biggest clique
+			System.out.println("The biggest clique in the graph is: "+Graph.getBiggestClique());
 			long t3= new Date().getTime();
 			System.out.println("Alg3: "+(t3-t2)+"  ms");
 			//write2file(c1);

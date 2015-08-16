@@ -20,13 +20,18 @@ import java.util.Vector;
 	 private double _TH; // the threshold value
 	 private int _E_size = 0;
 	 private boolean _mat_flag=true;
+	 private static int biggest_Clique = 0;
+
 	 Graph(String file, double th) {
 		this._file_name = file;
 		_TH = th;
 		_V = new  Vector <VertexSet>();
 		 init();
 	 }
-	 
+	 //Number of edges of the biggest clique
+	 public static int getBiggestClique(){
+			return biggest_Clique;
+	} 
 	private void init() {
 		FileReader fr=null;
 		try {
