@@ -14,7 +14,6 @@ public class Clique_Tester {
 	public static int MAX_CLIQUE = 100000;
 	public static boolean Convert = true;
 	
-	
 	public static void main(String[] args) {  // test1.csv_DG.txt  0.8 5 7
 		if(args==null || args.length<3) {
 			help();
@@ -38,6 +37,14 @@ public class Clique_Tester {
 			System.out.println("The biggest clique in the graph is: "+Graph.getBiggestClique());
 			long t3= new Date().getTime();
 			System.out.println("Alg3: "+(t3-t2)+"  ms");
+		
+			
+			
+			//We are working from here
+			long t4= new Date().getTime();
+			G.All_Cliques_DFS_2(out_file,minQ,maxQ);
+			long t5= new Date().getTime();
+			System.out.println("Our Alg: "+(t5-t4)+"  ms");
 			//write2file(c1);
 			//out_file = in_file+"_out2.txt";
 			//printAll(c2);
