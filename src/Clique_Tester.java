@@ -3,7 +3,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Date;
 import java.util.Vector;
-import java.util.*;
+
 
 public class Clique_Tester {
 	public static int minQ = 6, maxQ=10;
