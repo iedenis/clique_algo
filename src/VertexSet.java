@@ -4,6 +4,7 @@
  * @author Boaz
  *
  */
+//Michal commit
 public class VertexSet {
 	private int[] _set = null;
 	private int _sp;
