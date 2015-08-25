@@ -21,17 +21,98 @@ class Graph {
 	private boolean _mat_flag = true;
 	private static int biggest_Clique = 0;
 
-	Graph(String file, double th) {
+	Graph(String file, double th,boolean type) {
 		this._file_name = file;
 		_TH = th;
 		_V = new Vector<VertexSet>();
-		init();
+		if (type)init();
+		else
+			init1();
 	}
 
+	private void init1() {
+		FileReader fr = null;
+		try {
+			fr = new FileReader(this._file_name);
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+		BufferedReader is = new BufferedReader(fr);
+		try {
+			String s = is.readLine();
+			StringTokenizer st = new StringTokenizer(s, ", ");
+			int len = st.countTokens();
+			int line = 0;
+
+			String ll = "0%   20%   40%   60%   80%   100%";
+			int t = Math.max(1, len / ll.length());
+			if (Clique_Tester.Debug) {
+				System.out
+						.println("Reading a corrolation matrix of size: " + len + "*" + len + " this may take a while");
+				System.out.println(ll);
+			}
+			_mat_flag = true;
+			if (s.startsWith("A")) {
+				if (Clique_Tester.Debug) {
+					System.out.println("Assumes compact representation! two line haeder!!!");
+					System.out.println("Header Line1: " + s);
+					s = is.readLine();
+					System.out.println("Header Line2: " + s);
+					s = is.readLine();
+					st = new StringTokenizer(s, ", ");
+					_mat_flag = false;
+				}
+			}
+
+			while (s != null) {
+
+				if (Clique_Tester.Debug) {
+					if (line % t == 0)
+						System.out.print(".");
+				}
+				VertexSet vs = new VertexSet();
+				if (_mat_flag) {
+					for (int i = 0; i < len; i++) {
+						float v = new Double(st.nextToken()).floatValue();
+						if (v > _TH & line < i) {
+							vs.add(i);
+							_E_size++;
+						}
+					}
+				} else {
+					st.nextToken();
+					while (st.hasMoreTokens()) {
+						int ind = new Integer(st.nextToken()).intValue();
+						// bug fixed as for Ronens format.
+						if (line < ind)
+							vs.add(ind);
+					}
+				}
+				this._V.add(vs);
+				line++;
+				s = is.readLine();
+				if (s != null)
+					st = new StringTokenizer(s, ", ");
+			}
+			if (this._mat_flag & Clique_Tester.Convert) {
+				write2file();
+			}
+			if (Clique_Tester.Debug) {
+				System.out.println("");
+				System.out.print("done reading the graph! ");
+				this.print();
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	
 	// Number of edges of the biggest clique
 	public static int getBiggestClique() {
 		return biggest_Clique;
 	}
+
 
 	private void init() {
 		FileReader fr = null;
