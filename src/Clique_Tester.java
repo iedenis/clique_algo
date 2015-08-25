@@ -8,7 +8,9 @@ import java.util.Vector;
 public class Clique_Tester {
 	public static int minQ = 6, maxQ=10;
 	public static double TH = 0.75;
-	public static String in_file = "test1.csv";
+	public static double TH1= 0.05;
+	public static String in_file = "/home/fox/git_projects/clique_algo/src/test1.csv";
+	public static String in_file1="/home/fox/git_projects/clique_algo/src/tinyEWG.txt";
 	public static String out_file = null;
 	public static boolean Debug = true;
 	public static int MAX_CLIQUE = 100000;
@@ -23,6 +25,7 @@ public class Clique_Tester {
 		}
 			long t0= new Date().getTime();
 			Graph G = new Graph(in_file, TH);
+			Graph G1=new Graph(in_file1, TH1);
 			long t1= new Date().getTime();
 			System.out.println("Init Graph: "+(t1-t0)+"  ms");	
 			//Vector<VertexSet> c1 = G.All_Cliques(maxQ);
@@ -42,7 +45,7 @@ public class Clique_Tester {
 			
 			//We are working from here
 			long t4= new Date().getTime();
-			G.All_Cliques_DFS_2(out_file,minQ,maxQ);
+			G1.All_Cliques_DFS_2(out_file,minQ,maxQ);
 			long t5= new Date().getTime();
 			System.out.println("Our Alg: "+(t5-t4)+"  ms");
 			//write2file(c1);

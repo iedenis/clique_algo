@@ -7,7 +7,6 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.StringTokenizer;
 import java.util.Vector;
-
 /**
  * this class represents an undirected 0/1 sparse Graph
  * 
@@ -187,7 +186,6 @@ class Graph {
 					ans.add(tmp);
 				}
 			}
-
 		}
 		return ans;
 	}
@@ -198,28 +196,23 @@ class Graph {
 	 * mind - as a based code for a possibly implementation of parallel cernal.
 	 * 
 	 */
-	Vector<VertexSet> All_Cliques_DFS(int min_size, int max_size) {
-		Clique.init(this);
-		Vector<VertexSet> ans = new Vector<VertexSet>();
-		Vector<VertexSet> C0 = allEdges(); // all edges � all cliques of size 2/
-		// ans.addAll(C0);
-		int len = C0.size();
-		// System.out.println("|E|= "+len);
-		int count = 0;
-		for (int i = 0; i < len; i++) {
 
-			VertexSet curr_edge = C0.elementAt(i);
-			Clique edge = new Clique(curr_edge.at(0), curr_edge.at(1));
-			Vector<Clique> C1 = allC_seed(edge, min_size, max_size);
-			count += C1.size();
-			// System.out.println("alg2 "+i+")
-			// edge:["+curr_edge.at(0)+","+curr_edge.at(1)+"]"+C1.size() +"
-			// total: "+count);
-			addToSet(ans, C1);
-		} // for
-		return ans;
-	}
-
+	// This is not in use
+	/*
+	 * Vector<VertexSet> All_Cliques_DFS(int min_size, int max_size) {
+	 * Clique.init(this); Vector<VertexSet> ans = new Vector<VertexSet>();
+	 * Vector<VertexSet> C0 = allEdges(); // all edges � all cliques of size 2/
+	 * 
+	 * // ans.addAll(C0); int len = C0.size(); // System.out.println("|E|= "
+	 * +len); int count = 0; for (int i = 0; i < len; i++) {
+	 * 
+	 * VertexSet curr_edge = C0.elementAt(i); Clique edge = new
+	 * Clique(curr_edge.at(0), curr_edge.at(1)); Vector<Clique> C1 =
+	 * allC_seed(edge, min_size, max_size); count += C1.size(); //
+	 * System.out.println("alg2 "+i+") //
+	 * edge:["+curr_edge.at(0)+","+curr_edge.at(1)+"]"+C1.size() +" // total:
+	 * "+count); addToSet(ans, C1); } // for return ans; }
+	 */
 	/**
 	 * 
 	 * @param min_size
@@ -322,6 +315,7 @@ class Graph {
 		return ans;
 	}
 
+	// writing all cliques to .txt file
 	public void write2file() {
 		FileWriter fw = null;
 		try {
