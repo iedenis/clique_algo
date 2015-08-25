@@ -8,9 +8,10 @@ import java.util.Vector;
 public class Clique_Tester {
 	public static int minQ = 6, maxQ=10;
 	public static double TH = 0.75;
-	public static double TH1= 0.05;
-	public static String in_file = "/home/fox/git_projects/clique_algo/src/test1.csv";
-	public static String in_file1="/home/fox/git_projects/clique_algo/src/tinyEWG.txt";
+	public static double TH1= 0.03;
+	public static String in_file = "test1.csv";
+	public static String in_file1="C:/Users/Bosmra/workspace/gitP/clique_algo/src/tinyEWG.txt";
+	//public static String in_file1="tinyEWG.txt";
 	public static String out_file = null;
 	public static boolean Debug = true;
 	public static int MAX_CLIQUE = 100000;
