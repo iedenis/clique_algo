@@ -20,7 +20,7 @@ public class Clique_Tester {
 	public static int MAX_CLIQUE = 100000;
 	public static boolean Convert = true;
 	
-	public static void main(String[] args) {  // test1.csv_DG.txt  0.8 5 7
+	public static void main(String[] args) throws IOException {  // test1.csv_DG.txt  0.8 5 7
 		if(args==null || args.length<3) {
 			help();
 		}
@@ -39,7 +39,7 @@ public class Clique_Tester {
 		//	System.out.println("Alg2: "+(t2-t1)+"  ms");
 			//printAll(c1);
 			if(out_file==null)  out_file = in_file+"_"+TH+"_"+minQ+"_"+maxQ+".csv";
-			//G.All_Cliques_DFS(out_file,minQ,maxQ);
+		//	G.All_Cliques_DFS(out_file,minQ,maxQ);
 			//Printing the number of edges of the biggest clique
 			System.out.println("The biggest clique in the graph is: "+Graph.getBiggestClique());
 			long t3= new Date().getTime();
@@ -49,7 +49,7 @@ public class Clique_Tester {
 			
 			//We are working from here
 			long t4= new Date().getTime();
-			G1.All_Cliques_DFS_2(out_file,minQ,maxQ);
+		//	G1.All_Cliques_DFS_2(out_file,minQ,maxQ);
 			long t5= new Date().getTime();
 			System.out.println("Our Alg: "+(t5-t4)+"  ms");
 			//write2file(c1);
