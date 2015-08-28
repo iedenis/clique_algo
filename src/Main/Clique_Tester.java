@@ -7,6 +7,7 @@ import java.util.Vector;
 
 
 public class Clique_Tester {
+	
 	public static int minQ = 6, maxQ=10;
 	public static double TH = 0.75;
 	public static double TH1= 0.03;
@@ -21,6 +22,10 @@ public class Clique_Tester {
 	public static int MAX_CLIQUE = 100000;
 	public static boolean Convert = true;
 	public static void main(String[] args) throws IOException {  // test1.csv_DG.txt  0.8 5 7
+	
+		VertexSet vs=new VertexSet();
+		vs.add(0);
+        vs.toString();
 		if(args==null || args.length<3) {
 			help();
 		}

@@ -6,6 +6,7 @@
  *
  */
 package Main;
+
 public class VertexSet {
 	private int[] _set = null;
 	private int _sp;
@@ -15,12 +16,19 @@ public class VertexSet {
 		_set = new int[INIT_SIZE];
 		_sp = 0;
 	}
-public boolean contains(int num){
-	for (int i = 0; i < _set.length; i++) {
-		if(_set[i]==num)return true;
+
+	public int[] getSet() {
+		return _set;
 	}
-	return false;
-}
+
+	public boolean contains(int num) {
+		for (int i = 0; i < _set.length; i++) {
+			if (_set[i] == num)
+				return true;
+		}
+		return false;
+	}
+
 	public VertexSet(VertexSet ot) {
 		_set = new int[INIT_SIZE];
 		_sp = 0;
