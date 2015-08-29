@@ -17,12 +17,12 @@ import java.util.Vector;
  */
 class Graph {
 	private String _file_name;
-	private Vector<VertexSet> _V;
+	private static Vector<VertexSet> _V;
 	int numOfVertices;
 	int numOfEdges;
 	private double _TH; // the threshold value
 	private int _E_size = 0;
-	private boolean _mat_flag = true;
+	private static boolean _mat_flag = true;
 	private static int biggest_Clique = 0;
 	private Vector<VertexSet> _V1;
 
@@ -118,6 +118,141 @@ class Graph {
 	// Number of edges of the biggest clique
 	public static int getBiggestClique() {
 		return biggest_Clique;
+	}
+
+	// פונק מחזירה גודל הקליקה המקסמלית 
+	public static int getBiggestClique1() 
+	{
+		double max =0;
+		FileReader fr = null;
+		try {
+			fr = new FileReader(this._file_name);
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+		BufferedReader is = new BufferedReader(fr);
+		try {
+			String s = is.readLine();
+			StringTokenizer st = new StringTokenizer(s, ", ");
+			int len = st.countTokens();
+			String ll = "0%   20%   40%   60%   80%   100%";
+			int t = Math.max(1, len / ll.length());
+			int line = 2;
+			while (s != null) {
+
+				if (Clique_Tester.Debug) {
+					if (line % t == 0)
+						System.out.print(".");
+				}
+				VertexSet vs = new VertexSet();
+				if (_mat_flag) {
+					for (int i = 0; i < 2; i++) {
+						float v = new Double(st.nextToken()).floatValue();
+					}
+					    float v = new Double(st.nextToken()).floatValue();
+						if (v >max) {
+							//vs.add(i);
+							max=v;
+						}
+					
+				} else {
+					st.nextToken();
+					while (st.hasMoreTokens()) {
+						int ind = new Integer(st.nextToken()).intValue();
+						// bug fixed as for Ronens format.
+						if (line < ind)
+							vs.add(ind);
+					}
+				}
+				_V.add(vs);
+				line++;
+				s = is.readLine();
+				if (s != null)
+					st = new StringTokenizer(s, ", ");
+			}
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+			
+			
+		
+	}
+	// פונק שמחפשת קליקה בגודל מסוים
+	public static void find_clique(double num)
+	{
+		FileReader fr = null;
+		try {
+			fr = new FileReader(this._file_name);
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+		BufferedReader is = new BufferedReader(fr);
+		try {
+			String s = is.readLine();
+			StringTokenizer st = new StringTokenizer(s, ", ");
+			int len = st.countTokens();
+			int line = 0;
+
+			String ll = "0%   20%   40%   60%   80%   100%";
+			int t = Math.max(1, len / ll.length());
+			
+			_mat_flag = true;
+			if (s.startsWith("A")) {
+				if (Clique_Tester.Debug) {
+					System.out.println("Assumes compact representation! two line haeder!!!");
+					System.out.println("Header Line1: " + s);
+					s = is.readLine();
+					System.out.println("Header Line2: " + s);
+					s = is.readLine();
+					st = new StringTokenizer(s, ", ");
+					_mat_flag = false;
+				}
+			}
+
+			while (s != null) {
+
+				if (Clique_Tester.Debug) {
+					if (line % t == 0)
+						System.out.print(".");
+				}
+				VertexSet vs = new VertexSet();
+				if (_mat_flag) {
+					int i;
+					for (i = 0; i < 2; i++) {
+						float v = new Double(st.nextToken()).floatValue();
+					}
+					    float v = new Double(st.nextToken()).floatValue();
+						if (v == num) {
+							vs.add(i);
+						}
+					}
+			 else {
+					st.nextToken();
+					while (st.hasMoreTokens()) {
+						int ind = new Integer(st.nextToken()).intValue();
+						// bug fixed as for Ronens format.
+						if (line < ind)
+							vs.add(ind);
+					}
+				}
+				this._V.add(vs);
+				line++;
+				s = is.readLine();
+				if (s != null)
+					st = new StringTokenizer(s, ", ");
+			}
+			if (this._mat_flag & Clique_Tester.Convert) {
+				write2file();
+			}
+			if (Clique_Tester.Debug) {
+				System.out.println("");
+				System.out.print("done reading the graph! ");
+				this.print();
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	private void init() {
