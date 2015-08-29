@@ -51,9 +51,6 @@ class Graph {
 		BufferedReader reader = new BufferedReader(fr1);
 
 		String str = reader.readLine();
-		/*
-		 * for (int i = 0; i < 2; i++) { str = reader.readLine(); }
-		 */
 
 		try {
 			VertexSet vertSet;
