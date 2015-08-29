@@ -11,10 +11,10 @@ public class Clique_Tester {
 	public static double TH1= 0.03;
 	public static String in_file = "test1.csv";
 	//Samer
-	//public static String in_file1="C:/Users/Bosmra/workspace/gitP/clique_algo/src/tinyEWG.txt";
+	public static String in_file1="C:/Users/Bosmra/workspace/gitP/clique_algo/src/tinyEWG.txt";
 	//public static String in_file1="tinyEWG.txt";
 	//Denis
-	public static String in_file1="/home/fox/git_projects/clique_algo/src/tinyEWG.txt";
+	//public static String in_file1="/home/fox/git_projects/clique_algo/src/tinyEWG.txt";
 	public static String out_file = null;
 	public static boolean Debug = true;
 	public static int MAX_CLIQUE = 100000;
