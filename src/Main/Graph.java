@@ -1,3 +1,4 @@
+package Main;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -23,11 +24,13 @@ class Graph {
 	private int _E_size = 0;
 	private static boolean _mat_flag = true;
 	private static int biggest_Clique = 0;
+	private Vector<VertexSet> _V1;
 
-	Graph(String file, double th, boolean type) {
+	Graph(String file, double th, boolean type) throws IOException {
 		this._file_name = file;
 		_TH = th;
 		_V = new Vector<VertexSet>();
+
 		if (type)
 			init();
 		else
@@ -35,24 +38,34 @@ class Graph {
 	}
 
 	// we work with this init
-	private void init1() {
+	private void init1() throws IOException {
 		FileReader fr = null;
+		FileReader fr1 = null;
 		try {
 			fr = new FileReader(this._file_name);
+			fr1 = new FileReader(this._file_name);
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
 		BufferedReader is = new BufferedReader(fr);
-		try {
-			String s = is.readLine();
-			numOfVertices = Integer.parseInt(s);
-			s = is.readLine();
-			numOfEdges = Integer.parseInt(s);
-			s = is.readLine();
+		BufferedReader reader = new BufferedReader(fr1);
 
-			StringTokenizer st = new StringTokenizer(s);
+		String str = reader.readLine();
+		/*
+		 * for (int i = 0; i < 2; i++) { str = reader.readLine(); }
+		 */
+
+		try {
+			VertexSet vertSet;
+			numOfVertices = Integer.parseInt(str);
+			str = reader.readLine();
+			numOfEdges = Integer.parseInt(str);
+			str = reader.readLine();
+			StringTokenizer st = new StringTokenizer(str);
 			int len = st.countTokens();
-			int line = 2;
+			int line = 0;
+			_V1 = new Vector<VertexSet>();
+			_V1.setSize(numOfVertices);
 
 			String ll = "0%   20%   40%   60%   80%   100%";
 			int t = Math.max(1, len / ll.length());
@@ -62,51 +75,36 @@ class Graph {
 				System.out.println(ll);
 			}
 			_mat_flag = true;
-			if (s.startsWith("A")) {
-				if (Clique_Tester.Debug) {
-					System.out.println("Assumes compact representation! two line haeder!!!");
-					System.out.println("Header Line1: " + s);
-					s = is.readLine();
-					System.out.println("Header Line2: " + s);
-					s = is.readLine();
-					st = new StringTokenizer(s, ", ");
-					_mat_flag = false;
-				}
-			}
 
-			while (s != null) {
-
+			while (str != null) {
 				if (Clique_Tester.Debug) {
 					if (line % t == 0)
-						System.out.print(".");
+						System.out.print(".. ");
 				}
-				VertexSet vs = new VertexSet();
-				if (_mat_flag) {
-					for (int i = 0; i < len; i++) {
-						int j=0;
-					//	while(st.hasMoreTokens()){;}
-						//float z=new Double((double) st.nextElement()).floatValue();
-						float v = new Double(st.nextToken()).floatValue();
-						if (v > _TH & line < i) {
-							vs.add(i);
-							_E_size++;
-						}
-					}
-				} else {
-					st.nextToken();
-					while (st.hasMoreTokens()) {
-						int ind = new Integer(st.nextToken()).intValue();
-						// bug fixed as for Ronens format.
-						if (line < ind)
-							vs.add(ind);
-					}
+				String[] data1 = str.split("\\s+");
+				float v = Float.parseFloat(data1[2]);
+				int numOfLine = Integer.parseInt(data1[0]);
+				int secondNode = Integer.parseInt(data1[1]);
+				if (v > _TH) {
+					if (_V1.elementAt(numOfLine) == null) {
+						vertSet = new VertexSet();
+						vertSet.add(Integer.parseInt(data1[1]));
+						_V1.set(numOfLine, vertSet);
+					} else
+						_V1.get(numOfLine).add(secondNode);
 				}
-				this._V.add(vs);
+				if (_V1.elementAt(secondNode) == null) {
+					vertSet = new VertexSet();
+					vertSet.add(numOfLine);
+					_V1.set(secondNode, vertSet);
+
+				} else if (!_V1.elementAt(secondNode).contains(numOfLine)) {
+					_V1.get(secondNode).add(numOfLine);
+				}
+				str = reader.readLine();
 				line++;
-				s = is.readLine();
-				if (s != null)
-					st = new StringTokenizer(s);
 			}
+
 			if (this._mat_flag & Clique_Tester.Convert) {
 				write2file_new();
 			}
@@ -324,6 +322,8 @@ class Graph {
 				if (s != null)
 					st = new StringTokenizer(s, ", ");
 			}
+			// end while
+
 			if (this._mat_flag & Clique_Tester.Convert) {
 				write2file();
 			}
@@ -425,8 +425,11 @@ class Graph {
 		os.println("ALL_Cliques: of file: " + _file_name + ",  TH:" + this._TH);
 		os.println("");
 		for (int i = 0; i < numOfVertices; i++) {
-			VertexSet curr = _V.elementAt(i);
-			os.println(i + ", " + curr.toFile());
+			if (_V1.elementAt(i) != null) {
+				VertexSet curr = _V1.elementAt(i);
+				os.println(i + ", " + curr.toFile());
+			} else
+				os.println(i + ", ");
 		}
 		os.close();
 		try {
