@@ -120,8 +120,8 @@ class Graph {
 		return biggest_Clique;
 	}
 
-	// ôåð÷ îçæéøä âåãì ä÷ìé÷ä äî÷ñîìéú 
-	public static int getBiggestClique1() 
+	// ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ 
+	/*public  int getBiggestClique1() 
 	{
 		double max =0;
 		FileReader fr = null;
@@ -178,7 +178,8 @@ class Graph {
 			
 		
 	}
-	// ôåð÷ ùîçôùú ÷ìé÷ä áâåãì îñåéí
+	/*
+	// ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½
 	public static void find_clique(double num)
 	{
 		FileReader fr = null;
@@ -254,7 +255,7 @@ class Graph {
 			e.printStackTrace();
 		}
 	}
-
+*/
 	private void init() {
 		FileReader fr = null;
 		try {
@@ -492,7 +493,7 @@ class Graph {
 	/**
 	 * computes all the 2 cliques --> i.e. all the edges
 	 * 
-	 * @return
+	 * @return vector <VertexSet> with all edges. (Pairs of vertices)
 	 */
 	private Vector<VertexSet> allEdges() { // all edges ï¿½ all cliques of size 2/
 		Vector<VertexSet> ans = new Vector<VertexSet>();

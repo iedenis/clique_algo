@@ -11,7 +11,7 @@ public class Clique_Tester {
 	public static int minQ = 6, maxQ = 10;
 	public static double TH = 0.75;
 	public static double TH1 = 0.03;
-	public static String in_file = "test1.csv";
+	public static String in_file = System.getProperty("user.dir")+"/src/test1.csv";
 	
 	public static String in_file1 =System.getProperty("user.dir")+"/src/tinyEWG.txt";// "/home/fox/git_projects/clique_algo/src/tinyEWG.txt";
 	public static String out_file = null;
@@ -28,8 +28,8 @@ public class Clique_Tester {
 			parse(args);
 		}
 		long t0 = new Date().getTime();
-		// Graph G = new Graph(in_file, TH,true);
-		Graph G1 = new Graph(in_file1, TH1, false);
+	 Graph G = new Graph(in_file, TH,true);
+		//Graph G1 = new Graph(in_file1, TH1, false);
 		long t1 = new Date().getTime();
 		System.out.println("Init Graph: " + (t1 - t0) + "  ms");
 		// Vector<VertexSet> c1 = G.All_Cliques(maxQ);
@@ -40,7 +40,7 @@ public class Clique_Tester {
 		// printAll(c1);
 		if (out_file == null)
 			out_file = in_file + "_" + TH + "_" + minQ + "_" + maxQ + ".csv";
-		// G.All_Cliques_DFS(out_file,minQ,maxQ);
+		 G.All_Cliques_DFS(out_file,minQ,maxQ);
 		// Printing the number of edges of the biggest clique
 		System.out.println("The biggest clique in the graph is: " + Graph.getBiggestClique());
 		long t3 = new Date().getTime();
@@ -48,7 +48,7 @@ public class Clique_Tester {
 
 		// We are working from here
 		long t4 = new Date().getTime();
-		 G1.All_Cliques_DFS_2(out_file,minQ,maxQ);
+		// G1.All_Cliques_DFS_2(out_file,minQ,maxQ);
 		long t5 = new Date().getTime();
 		System.out.println("Our Alg: " + (t5 - t4) + "  ms");
 		// write2file(c1);
