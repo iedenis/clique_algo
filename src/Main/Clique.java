@@ -67,4 +67,7 @@ public class Clique {
 	public VertexSet commonNi() {
 		return _Ni;
 	}
+	public String toString(){
+		return "Intersection of them:"+_Ni.toString()+"********"+_clique.toString()+"||||||";
+	}
 }

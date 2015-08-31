@@ -24,7 +24,6 @@ class Graph {
 	private int _E_size = 0;
 	private static boolean _mat_flag = true;
 	private static int biggest_Clique = 0;
-	private Vector<VertexSet> _V1;
 
 	Graph(String file, double th, boolean type) throws IOException {
 		this._file_name = file;
@@ -61,8 +60,8 @@ class Graph {
 			StringTokenizer st = new StringTokenizer(str);
 			int len = st.countTokens();
 			int line = 0;
-			_V1 = new Vector<VertexSet>();
-			_V1.setSize(numOfVertices);
+			_V = new Vector<VertexSet>();
+			_V.setSize(numOfVertices);
 
 			String ll = "0%   20%   40%   60%   80%   100%";
 			int t = Math.max(1, len / ll.length());
@@ -83,20 +82,21 @@ class Graph {
 				int numOfLine = Integer.parseInt(data1[0]);
 				int secondNode = Integer.parseInt(data1[1]);
 				if (v > _TH) {
-					if (_V1.elementAt(numOfLine) == null) {
+					if (_V.elementAt(numOfLine) == null) {
 						vertSet = new VertexSet();
 						vertSet.add(Integer.parseInt(data1[1]));
-						_V1.set(numOfLine, vertSet);
+						_V.set(numOfLine, vertSet);
 					} else
-						_V1.get(numOfLine).add(secondNode);
-				}
-				if (_V1.elementAt(secondNode) == null) {
+						_V.get(numOfLine).add(secondNode);
+				
+				if (_V.elementAt(secondNode) == null) {
 					vertSet = new VertexSet();
 					vertSet.add(numOfLine);
-					_V1.set(secondNode, vertSet);
+					_V.set(secondNode, vertSet);
 
-				} else if (!_V1.elementAt(secondNode).contains(numOfLine)) {
-					_V1.get(secondNode).add(numOfLine);
+				} else if (!_V.elementAt(secondNode).contains(numOfLine)) {
+					_V.get(secondNode).add(numOfLine);
+				}
 				}
 				str = reader.readLine();
 				line++;
@@ -381,8 +381,10 @@ class Graph {
 			VertexSet curr_edge = C0.elementAt(i);
 			Clique edge = new Clique(curr_edge.at(0), curr_edge.at(1));
 			Vector<Clique> C1 = allC_seed(edge, min_size, max_size);
+			System.out.println(C1);
 
-			for (int b = 0; b < C1.size(); b++) {
+			// I think we can change here //Denis//
+			for (int b = 0; b < C1.size(); b++) {     // Denis: Here you can take the last one I think 
 				Clique c = C1.elementAt(b);
 				if (c.size() >= min_size) {
 					if (c.size() > biggest_Clique)
@@ -423,8 +425,8 @@ class Graph {
 		os.println("ALL_Cliques: of file: " + _file_name + ",  TH:" + this._TH);
 		os.println("");
 		for (int i = 0; i < numOfVertices; i++) {
-			if (_V1.elementAt(i) != null) {
-				VertexSet curr = _V1.elementAt(i);
+			if (_V.elementAt(i) != null) {
+				VertexSet curr = _V.elementAt(i);
 				os.println(i + ", " + curr.toFile());
 			} else
 				os.println(i + ", ");
