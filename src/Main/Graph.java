@@ -9,6 +9,10 @@ import java.io.PrintWriter;
 import java.util.StringTokenizer;
 import java.util.Vector;
 
+import clique_algo.Clique;
+import clique_algo.Clique_Tester;
+import clique_algo.VertexSet;
+
 /**
  * this class represents an undirected 0/1 sparse Graph
  * 
@@ -658,6 +662,83 @@ class Graph {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public void All_Cliques_DFS_3(String out_file, int min_size, int max_size) {
+		Clique.init(this);
+		Vector<VertexSet>C0 = allEdges(); // all edges – all cliques of size 2/
+		int len = C0.size();
+		System.out.println("|E|= "+len);
+		int count = 0;
+
+		FileWriter fw=null;
+		try {fw = new FileWriter(out_file);} 
+		catch (IOException e) {e.printStackTrace();}
+		PrintWriter os = new PrintWriter(fw);
+		//os.println("A");
+
+		String ll = "0%   20%   40%   60%   80%   100%";
+		int t = Math.max(1,len/ll.length());
+		if(Clique_Tester.Debug){
+			System.out.println("Computing all cliques of size["+min_size+","+max_size+"] based on "+len+" edges graph, this may take a while");
+			System.out.println(ll);
+		}
+		os.println("All Cliques: file [min max] TH,"+this._file_name+","+min_size+", "+max_size+", "+this._TH);
+		os.println("index, edge, clique size, c0, c1, c2, c3, c4,  c5, c6, c7, c8, c9");
+		for(int i=0;i<len;i++) {
+
+			VertexSet curr_edge = C0.elementAt(i);
+			Clique edge = new Clique(curr_edge.at(0),curr_edge.at(1) );
+			
+			if ((edge.clique().size()/*2*/ + edge.commonNi().size()) >= min_size) {/*Michal: changed num 1*/
+				Vector<Clique> C1 = allC_seed_3(edge, min_size, max_size);
+				for(int b=0;b<C1.size();b++) {
+					Clique c = C1.elementAt(b);
+					if (c.size()>=min_size) {
+						os.println(count+", "+i+","+c.size()+", "+c.toFile());
+						count++;
+					}
+				}
+				if(count > Clique_Tester.MAX_CLIQUE) {
+					os.println("ERROR: too many cliques! - cutting off at "+Clique_Tester.MAX_CLIQUE+" for larger files change the default Clique_Tester.MAX_CLIQUE param");
+					i=len;
+				}
+			}
+		
+			if(i%t==0) {
+				System.out.print(".");
+			}
+		} // for
+		System.out.println();
+
+		os.close();
+		try {
+			fw.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	Vector<Clique> allC_seed_3(Clique edge, int min_size, int max_size) {
+		Vector<Clique> ans = new Vector<Clique>();
+		ans.add(edge);
+		int i=0;
+		//	int size = 2;
+		while (ans.size()>i) {
+			Clique curr = ans.elementAt(i);
+			if(curr.size()<max_size) {
+				VertexSet Ni = curr.commonNi();
+				for(int a=0;a<Ni.size();a++) {
+					Clique c = new Clique(curr,Ni.at(a));
+					
+					if ((c.clique().size() + c.commonNi().size()) >= min_size) /*Michal: changed num 2*/
+						ans.add(c);
+				}
+			}
+			else {i=ans.size();} // speedup trick 
+			i++;
+		}
+		return ans;
 	}
 
 }
