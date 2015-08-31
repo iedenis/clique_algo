@@ -33,11 +33,11 @@ class Graph {
 		if (type)
 			init();
 		else
-			init1();
+			parseNewGraph();
 	}
 
 	// we work with this init
-	private void init1() throws IOException {
+	private void parseNewGraph() throws IOException {
 		FileReader fr = null;
 		FileReader fr1 = null;
 		try {
@@ -383,8 +383,7 @@ class Graph {
 			Vector<Clique> C1 = allC_seed(edge, min_size, max_size);
 			System.out.println(C1);
 
-			// I think we can change here //Denis//
-			for (int b = 0; b < C1.size(); b++) {     // Denis: Here you can take the last one I think 
+			for (int b = 0; b < C1.size(); b++) { 
 				Clique c = C1.elementAt(b);
 				if (c.size() >= min_size) {
 					if (c.size() > biggest_Clique)
