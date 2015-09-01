@@ -1,6 +1,7 @@
 /*
  * Test class for the class Clique. It is in Main package because of 
  * visibility of the class Graph.
+ * Using tinyEwg.txt graph for testing (for initialization)
  */
 
 package Main;
@@ -18,6 +19,7 @@ import Main.Clique;
 
 public class CliqueTest {
 	Clique c;
+	Clique c1;
 	static Graph G;
 
 	@BeforeClass
@@ -31,45 +33,40 @@ public class CliqueTest {
 		c = new Clique(0, 3);
 	}
 
-	@After
-	public void tearDown() throws Exception {
-	}
 	@Test
 	public void testCommonNi() {
 		VertexSet vs = new VertexSet();
 		vs.add(6);
 		assertEquals(vs.toString(), c.commonNi().toString());
 	}
-	
+
 	@Test
 	public void testAddVertex() {
-		VertexSet vs=new VertexSet();
+		VertexSet vs = new VertexSet();
 		vs.add(6);
 		assertEquals(vs.toString(), c.commonNi().toString());
 		c.addVertex(2);
-		VertexSet vs1=new VertexSet();
+		VertexSet vs1 = new VertexSet();
 		assertEquals(vs1.toString(), c.commonNi().toString());
-		
-	}
-	@Test
-	public void testInit() {
-
 	}
 
 	@Test
 	public void testCliqueIntInt() {
+		c1 = new Clique(0, 3);
+		VertexSet vs = new VertexSet();
+		vs.add(6);
+		assertEquals(vs.toString(), c1.commonNi().toString());
+		VertexSet vs1 = new VertexSet();
+		vs1.add(0);
+		vs1.add(3);
+		assertEquals(vs1.toString(), c1.clique().toString());
 	}
 
 	@Test
 	public void testCliqueClique() {
-	}
-
-	@Test
-	public void testCliqueCliqueInt() {
-	}
-
-	@Test
-	public void testToFile() {
+		c1 = new Clique(c);
+		assertEquals(c1.commonNi().toString(), c.commonNi().toString());
+		assertEquals(c1.clique().toString(), c.clique().toString());
 	}
 
 	@Test
@@ -84,8 +81,9 @@ public class CliqueTest {
 			fail();
 	}
 
-	
-
-	
+	@Test
+	public void testToFile() {
+		assertNotNull(c.clique());
+	}
 
 }

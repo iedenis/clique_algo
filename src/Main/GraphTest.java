@@ -16,7 +16,8 @@ public class GraphTest {
 
 	private static Graph G;
 	private VertexSet vs;
-	Vector<VertexSet> V=new Vector<VertexSet>();
+	Vector<VertexSet> V = new Vector<VertexSet>();
+
 	@Before
 	public void setUp() throws Exception {
 		vs = new VertexSet();
@@ -26,32 +27,32 @@ public class GraphTest {
 	}
 
 	@BeforeClass
-	public static void setUpBeforeClass() throws IOException{
-		G=new Graph(System.getProperty("user.dir")+"/src/tinyEWG.txt",0.3,false);
+	public static void setUpBeforeClass() throws IOException {
+		G = new Graph(System.getProperty("user.dir") + "/src/tinyEWG.txt", 0.3, false);
 
 	}
-	
+
 	@After
 	public void tearDown() throws Exception {
 	}
 
-	@Ignore
 	@Test(expected = Exception.class)
 	public void testGraph() throws IOException {
-		//System.setErr(null);
+		System.setErr(null);
 		try {
 			G = new Graph("/src/tinyEWG.txt", 0.3, true);
 		} catch (IOException e) {
 			throw e;
 		}
 	}
-	public void testGraphNotNull(){
+
+	public void testGraphNotNull() {
 		try {
-			G=new Graph(System.getProperty("user.dir")+"/src/tinyEWG.txt",0.3,false);
+			G = new Graph(System.getProperty("user.dir") + "/src/tinyEWG.txt", 0.3, false);
+			assertNotNull(G);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		assertNull(G);
 	}
 
 	@Test

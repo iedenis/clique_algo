@@ -9,19 +9,18 @@ import java.util.Vector;
 public class Clique_Tester {
 
 	public static int minQ = 3, maxQ = 10;
-	public static double TH = 0.75;
-	public static double TH1 = 0.3;    // drops FileNoFoundException. Have to check it!! 
-	public static String in_file = "C:/Users/Bosmra/workspace/gitP/clique_algo/src/test1.csv";
+	public static double TH = 0.1;
+	public static double TH1 = 0.05;    // drops FileNoFoundException. Have to check it!! 
+	public static String in_file = System.getProperty("user.dir")+"/src/test1.csv";
 	
-	public static String in_file1 ="C:/Users/Bosmra/workspace/gitP/clique_algo/src/tinyEWG.txt";// "/home/fox/git_projects/clique_algo/src/tinyEWG.txt";
+	public static String in_file1 =System.getProperty("user.dir")+"/src/1000EWG.txt";
 	public static String out_file = null;
 	public static String out_file1=null;
 	public static boolean Debug = true;
 	public static int MAX_CLIQUE = 100000;
 	public static boolean Convert = true;
 
-	public static void main(String[] args) throws IOException { // test1.csv_DG.txt
-																// 0.8 5 7
+	public static void main(String[] args) throws IOException { 
 		
 		if (args == null || args.length < 3) {
 			help();
@@ -30,7 +29,7 @@ public class Clique_Tester {
 		}
 		long t0 = new Date().getTime();
 	 Graph G = new Graph(in_file, TH,true);
-	//	Graph G1 = new Graph(in_file1, TH1, false);
+		Graph G1 = new Graph(in_file1, TH1, false);
 		long t1 = new Date().getTime();
 		System.out.println("Init Graph: " + (t1 - t0) + "  ms");
 		// Vector<VertexSet> c1 = G.All_Cliques(maxQ);
@@ -52,7 +51,7 @@ public class Clique_Tester {
 		if(out_file1==null)
 			 out_file1=in_file1+"_"+ TH+"_" + minQ + "_" + maxQ + ".csv";
 
-		// G1.All_Cliques_DFS_2(out_file1,minQ,maxQ);
+		 G1.All_Cliques_DFS_2(out_file1,minQ,maxQ);
 		 		long t5 = new Date().getTime();
 		System.out.println("Our Alg: " + (t5 - t4) + "  ms");
 		// write2file(c1);
