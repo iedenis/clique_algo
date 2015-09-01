@@ -111,7 +111,7 @@ class Graph {
 			}
 
 			if (Graph._mat_flag & Clique_Tester.Convert) {
-				write2file_new();
+				write2file();
 			}
 			if (Clique_Tester.Debug) {
 				System.out.println("");
@@ -285,30 +285,7 @@ class Graph {
 
 	}
 
-	public void write2file_new() {
-		FileWriter fw = null;
-		try {
-			fw = new FileWriter(this._file_name + "_DG.txt");
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		PrintWriter os = new PrintWriter(fw);
-		os.println("ALL_Cliques: of file: " + _file_name + ",  TH:" + this._TH);
-		os.println("");
-		for (int i = 0; i < numOfVertices; i++) {
-			if (_V.elementAt(i) != null) {
-				VertexSet curr = _V.elementAt(i);
-				os.println(i + ", " + curr.toFile());
-			} else
-				os.println(i + ", ");
-		}
-		os.close();
-		try {
-			fw.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
+	
 
 	/*
 	 * Don't change from here anything !! Our code is above
@@ -530,7 +507,7 @@ class Graph {
 		 */
 		return ans;
 	}
-
+	
 	// writing all cliques to .txt file
 	public void write2file() {
 		FileWriter fw = null;
