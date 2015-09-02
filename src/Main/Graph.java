@@ -12,11 +12,11 @@ import java.util.Vector;
 import clique_algo.Clique;
 import clique_algo.Clique_Tester;
 import clique_algo.VertexSet;
-*/
+
 
 import clique_algo.Clique;
 import clique_algo.VertexSet;
-
+*/
 /**
  * this class represents an undirected 0/1 sparse Graph
  * 
@@ -571,19 +571,44 @@ class Graph {
 		return Answer;
 	}
 	
-	Vector<VertexSet> find_clique(int num)
+	
+	Vector<Clique> find_clique(int num)
 	{
+		Vector<Clique> result=new Vector<Clique>();
+		Vector<Clique> ans = new Vector<Clique>();
 		int ind = _AllEdges.size() -1;
-		VertexSet curr_edge = _AllEdges.elementAt(ind);
-		Clique c = new Clique(curr_edge.at(0), curr_edge.at(1));
-		if (num==2)
-			return _AllEdges;
-		else
-		{
-			Vector<Clique> ans = new Vector<Clique>();
-			ans.add(c);
+		while (ind >= 0) {
+			VertexSet curr_edge = _AllEdges.elementAt(ind);
+			Clique c = new Clique(curr_edge.at(0), curr_edge.at(1));
+			ans = all_cliqueV (c);
+			ind--;
 		}
-			
+		
+		int len =ans.size();
+		for(int i=0;i<len;i++)
+		{
+			if (ans.elementAt(i).size()==num)
+				result.add(ans.elementAt(i));
+		}
+		
+		return result;
+	}
+	
+	Vector<Clique> all_cliqueV (Clique edge) {
+		Vector<Clique> ans = new Vector<Clique>();
+		ans.add(edge);
+		int i = 0;
+		// int size = 2;
+		while (ans.size() > i) {
+			Clique curr = ans.elementAt(i);
+			VertexSet Ni = curr.commonNi();
+			for (int a = 0; a < Ni.size(); a++) {
+				Clique c = new Clique(curr, Ni.at(a));
+				ans.add(c); 
+				}
+			} // speedup trick
+			i++;
+		return ans;
 	}
 
 }
