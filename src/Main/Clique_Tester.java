@@ -1,65 +1,58 @@
 package Main;
 
-import java.io.FileWriter;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.Date;
-import java.util.Vector;
 
 public class Clique_Tester {
 
 	public static int minQ = 3, maxQ = 10;
-	public static double TH = 0.1;
-	public static double TH1 = 0.05;    // drops FileNoFoundException. Have to check it!! 
-	public static String in_file = System.getProperty("user.dir")+"/src/test1.csv";
-	
-	public static String in_file1 =System.getProperty("user.dir")+"/src/1000EWG.txt";
+	public static double TH = 0.8;
+	public static double TH1 = 0.01;
+	public static int sizeOfSClique=11;
+	public static String in_file = System.getProperty("user.dir") + "/src/test1.csv";
+
+	public static String in_file1 = System.getProperty("user.dir") + "/src/1000EWG.txt";
 	public static String out_file = null;
-	public static String out_file1=null;
+	public static String out_file1 = null;
+	
 	public static boolean Debug = true;
 	public static int MAX_CLIQUE = 100000;
 	public static boolean Convert = true;
 
-	public static void main(String[] args) throws IOException { 
-		
+	public static void main(String[] args) throws IOException {
+
 		if (args == null || args.length < 3) {
 			help();
 		} else {
 			parse(args);
 		}
 		long t0 = new Date().getTime();
-	 Graph G = new Graph(in_file, TH,true);
-		Graph G1 = new Graph(in_file1, TH1, false);
+		//Graph G = new Graph(in_file, TH, true);
 		long t1 = new Date().getTime();
 		System.out.println("Init Graph: " + (t1 - t0) + "  ms");
-		// Vector<VertexSet> c1 = G.All_Cliques(maxQ);
-
-		// Vector<VertexSet> c2 = G.All_Cliques_DFS(2,maxQ);
 		long t2 = new Date().getTime();
-		// System.out.println("Alg2: "+(t2-t1)+" ms");
-		// printAll(c1);
+
 		if (out_file == null)
 			out_file = in_file + "_" + TH + "_" + minQ + "_" + maxQ + ".csv";
-		 G.All_Cliques_DFS(out_file,minQ,maxQ);
-		// Printing the number of edges of the biggest clique
-		System.out.println("The biggest clique in the graph is: " + Graph.getBiggestClique());
+	//	System.out.println("the biggest clique in the test1 graph is: " + G.sizeOfBiggestClique(sizeOfSClique));
+
+	//	G.All_Cliques_DFS(out_file, minQ, maxQ);
 		long t3 = new Date().getTime();
 		System.out.println("Alg3: " + (t3 - t2) + "  ms");
 
 		// We are working from here
 		long t4 = new Date().getTime();
-		if(out_file1==null)
-			 out_file1=in_file1+"_"+ TH+"_" + minQ + "_" + maxQ + ".csv";
+		if (out_file1 == null)
+			out_file1 = in_file1 + "_" + TH + "_" + minQ + "_" + maxQ + ".csv";
+		Graph G1 = new Graph(in_file1, TH1, false);
 
-		 G1.All_Cliques_DFS_2(out_file1,minQ,maxQ);
-		 		long t5 = new Date().getTime();
+		G1.All_Cliques_DFS_2(out_file1, minQ, maxQ);
+		long t5 = new Date().getTime();
 		System.out.println("Our Alg: " + (t5 - t4) + "  ms");
-		// write2file(c1);
-		// out_file = in_file+"_out2.txt";
-		// printAll(c2);
-		// write2file(c2);
-
-		// }
+		 System.out.println("The biggest clique in the graph is :"+G1.sizeOfBiggestClique(sizeOfSClique));
+		 out_file1=null;
+		 out_file1 = in_file1 + "_" + "cliques_of_size_"+sizeOfSClique+".csv";
+		 G1.getAllCliquesOfSize(out_file1,sizeOfSClique);
 	}
 
 	static void help() {
@@ -75,6 +68,7 @@ public class Clique_Tester {
 			TH = new Double(a[1]);
 			minQ = new Integer(a[2]);
 			maxQ = new Integer(a[3]);
+			sizeOfSClique=new Integer(a[4]);
 			if (a.length > 4)
 				out_file = a[4];
 			if (a.length > 5)
@@ -86,19 +80,4 @@ public class Clique_Tester {
 			help();
 		}
 	}
-
-	/*
-	 * static void printAll(Vector<VertexSet> c) { for(int i=0;i<c.size();i++) {
-	 * VertexSet curr = c.elementAt(i); if(curr.size()>=minQ) {
-	 * System.out.println(i+") "+curr); } } }
-	 * 
-	 * 
-	 * static void write2file(Vector<VertexSet> c) { FileWriter fw=null; try {fw
-	 * = new FileWriter(out_file);} catch (IOException e) {e.printStackTrace();}
-	 * PrintWriter os = new PrintWriter(fw); os.println("ALL_Cliques: of file: "
-	 * +in_file+",  TH:"+TH+" Max Q:"+maxQ); for(int i=0;i<c.size();i++) {
-	 * VertexSet curr = c.elementAt(i); if(curr.size()>=minQ) os.println(i+") "
-	 * +curr); } os.close(); try { fw.close(); } catch (IOException e) {
-	 * e.printStackTrace(); } }
-	 */
 }
