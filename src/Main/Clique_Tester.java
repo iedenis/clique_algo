@@ -49,11 +49,27 @@ public class Clique_Tester {
 		G1.All_Cliques_DFS_2(out_file1, minQ, maxQ);
 		long t5 = new Date().getTime();
 		System.out.println("Our Alg: " + (t5 - t4) + "  ms");
+		printTestAll_Cliques_DFS();
 		 System.out.println("The biggest clique in the graph is :"+G1.sizeOfBiggestClique(sizeOfSClique));
 		 out_file1=null;
 		 out_file1 = in_file1 + "_" + "cliques_of_size_"+sizeOfSClique+".csv";
 		 G1.getAllCliquesOfSize(out_file1,sizeOfSClique);
 	}
+	
+	static void printTestAll_Cliques_DFS () {
+		System.out.println("+++++++ All_Cliques_DFS Test resalts: +++++++++++++++");
+		System.out.println("All_Cliques_DFS:::::::");
+		System.out.println("forLen\t=" + Graph.forLen);
+		System.out.println("forC1\t=" + Graph.forC1);
+		System.out.println("ifCount\t=" + Graph.ifCount);
+		System.out.println("allC_seed:::::::::::::");
+		System.out.println("EnterAllCSeed\t=" + Graph.EnterAllCSeed);
+		System.out.println("whileEnter\t=" + Graph.whileEnter);
+		System.out.println("ifEnter\t=" + Graph.ifEnter);
+		System.out.println("forNi\t=" + Graph.forNi);
+		System.out.println("---------------------------");
+	}
+
 
 	static void help() {
 		System.out.println(

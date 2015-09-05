@@ -38,6 +38,18 @@ class Graph {
 	private Vector<VertexSet> _AllEdges;
 	private Vector<VertexSet> C0; // All edges of the graph
 	private Vector<Clique> _VC;
+	
+	/**filds for testing the improovment in All_Cliques_DFS*/
+	public static int
+		/*allC_seed*/
+		EnterAllCSeed = 0, 
+		whileEnter = 0,
+		ifEnter = 0, /*if(curr.size()<max_size)*/
+		forNi = 0,
+		/*All_Cliques_DFS*/
+		forLen = 0,
+		forC1 = 0,
+		ifCount = 0;
 
 	Graph(String file, double th, boolean type) throws IOException {
 		this._file_name = file;
@@ -48,6 +60,170 @@ class Graph {
 		else
 			parseNewGraph();
 	}
+	
+	public void All_Cliques_DFS(String out_file, int min_size, int max_size) {
+		Clique.init(this);
+		Vector<VertexSet>C0 = allEdges(); // all edges – all cliques of size 2/
+		int len = C0.size();
+		System.out.println("|E|= "+len);
+		int count = 0;
+
+		FileWriter fw=null;
+		try {fw = new FileWriter(out_file);} 
+		catch (IOException e) {e.printStackTrace();}
+		PrintWriter os = new PrintWriter(fw);
+		//os.println("A");
+
+		String ll = "0%   20%   40%   60%   80%   100%";
+		int t = Math.max(1,len/ll.length());
+		if(Clique_Tester.Debug){
+			System.out.println("Computing all cliques of size["+min_size+","+max_size+"] based on "+len+" edges graph, this may take a while");
+			System.out.println(ll);
+		}
+		os.println("All Cliques: file [min max] TH,"+this._file_name+","+min_size+", "+max_size+", "+this._TH);
+		os.println("index, edge, clique size, c0, c1, c2, c3, c4,  c5, c6, c7, c8, c9");
+		for(int i=0;i<len;i++) {
+			forLen++;
+			
+			VertexSet curr_edge = C0.elementAt(i);
+			Clique edge = new Clique(curr_edge.at(0),curr_edge.at(1));
+			Vector<Clique> C1 = allC_seed(edge, min_size, max_size);
+
+			for(int b=0;b<C1.size();b++) {
+				forC1++;
+				Clique c = C1.elementAt(b);
+				if (c.size()>=min_size) {
+					ifCount++;
+					os.println(count+", "+i+","+c.size()+", "+c.toFile());
+					count++;
+				}
+			}
+			if(count > Clique_Tester.MAX_CLIQUE) {
+				os.println("ERROR: too many cliques! - cutting off at "+Clique_Tester.MAX_CLIQUE+" for larger files change the default Clique_Tester.MAX_CLIQUE param");
+				i=len;
+			}
+			if(i%t==0) {
+				System.out.print(".");
+			}
+		} // for
+		System.out.println();
+
+		os.close();
+		try {
+			fw.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}
+	Vector<Clique> allC_seed(Clique edge, int min_size, int max_size) {
+		EnterAllCSeed++;
+		Vector<Clique> ans = new Vector<Clique>();
+		ans.add(edge);
+		int i=0;
+		//	int size = 2;
+		while (ans.size()>i) {
+			whileEnter++;
+			Clique curr = ans.elementAt(i);
+			if(curr.size()<max_size) {
+				ifEnter++;
+				VertexSet Ni = curr.commonNi();
+				for(int a=0;a<Ni.size();a++) {
+					forNi++;
+					Clique c = new Clique(curr,Ni.at(a));
+					ans.add(c);
+				}
+			}
+			else {i=ans.size();} // speedup trick 
+			i++;
+		}
+		return ans;
+	}
+	
+	public void All_Cliques_DFS_2(String out_file, int min_size, int max_size) {
+		Clique.init(this);
+		Vector<VertexSet>C0 = allEdges(); // all edges – all cliques of size 2/
+		int len = C0.size();
+		System.out.println("|E|= "+len);
+		int count = 0;
+
+		FileWriter fw=null;
+		try {fw = new FileWriter(out_file);} 
+		catch (IOException e) {e.printStackTrace();}
+		PrintWriter os = new PrintWriter(fw);
+		//os.println("A");
+
+		String ll = "0%   20%   40%   60%   80%   100%";
+		int t = Math.max(1,len/ll.length());
+		if(Clique_Tester.Debug){
+			System.out.println("Computing all cliques of size["+min_size+","+max_size+"] based on "+len+" edges graph, this may take a while");
+			System.out.println(ll);
+		}
+		os.println("All Cliques: file [min max] TH,"+this._file_name+","+min_size+", "+max_size+", "+this._TH);
+		os.println("index, edge, clique size, c0, c1, c2, c3, c4,  c5, c6, c7, c8, c9");
+		for(int i=0;i<len;i++) {
+			forLen++;
+			
+			VertexSet curr_edge = C0.elementAt(i);
+			Clique edge = new Clique(curr_edge.at(0),curr_edge.at(1) );
+			
+			if ((edge.clique().size()/*2*/ + edge.commonNi().size()) >= min_size) {/*Michal: changed num 1*/
+				Vector<Clique> C1 = allC_seed_2(edge, min_size, max_size);
+				for(int b=0;b<C1.size();b++) {
+					forC1++;
+					Clique c = C1.elementAt(b);
+					if (c.size()>=min_size) {
+						ifCount++;
+						os.println(count+", "+i+","+c.size()+", "+c.toFile());
+						count++;
+					}
+				}
+				if(count > Clique_Tester.MAX_CLIQUE) {
+					os.println("ERROR: too many cliques! - cutting off at "+Clique_Tester.MAX_CLIQUE+" for larger files change the default Clique_Tester.MAX_CLIQUE param");
+					i=len;
+				}
+			}
+		
+			if(i%t==0) {
+				System.out.print(".");
+			}
+		} // for
+		System.out.println();
+
+		os.close();
+		try {
+			fw.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	Vector<Clique> allC_seed_2(Clique edge, int min_size, int max_size) {
+		EnterAllCSeed++;
+		Vector<Clique> ans = new Vector<Clique>();
+		ans.add(edge);
+		int i=0;
+		//	int size = 2;
+		while (ans.size()>i) {
+			whileEnter++;
+			Clique curr = ans.elementAt(i);
+			if(curr.size()<max_size) {
+				ifEnter++;
+				VertexSet Ni = curr.commonNi();
+				for(int a=0;a<Ni.size();a++) {
+					forNi++;
+					Clique c = new Clique(curr,Ni.at(a));
+					if ((c.clique().size() + c.commonNi().size()) >= min_size) /*Michal: changed num 2*/
+						ans.add(c);
+				}
+			}
+			else {i=ans.size();} // speedup trick 
+			i++;
+		}
+		return ans;
+	}
+
 
 	/**
 	 * Function for the new Graph format parsing.
@@ -299,71 +475,6 @@ class Graph {
 		return ans;
 	}
 
-	/**
-	 * 
-	 * @param min_size
-	 * @param max_size
-	 */
-	public void All_Cliques_DFS(String out_file, int min_size, int max_size) {
-		Clique.init(this);
-		int len = C0.size();
-		System.out.println("|E|= " + len);
-		int count = 0;
-
-		FileWriter fw = null;
-		try {
-			fw = new FileWriter(out_file);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		PrintWriter os = new PrintWriter(fw);
-		// os.println("A");
-
-		String ll = "0%   20%   40%   60%   80%   100% ";
-		int t = Math.max(1, len / ll.length());
-		if (Clique_Tester.Debug) {
-			System.out.println("Computing all cliques of size[" + min_size + "," + max_size + "] based on " + len
-					+ " edges graph, this may take a while");
-			System.out.println(ll);
-		}
-		os.println("All Cliques: file [min max] TH," + this._file_name + "," + min_size + ", " + max_size + ", "
-				+ this._TH);
-		os.println("index, edge, clique size, c0, c1, c2, c3, c4,  c5, c6, c7, c8, c9");
-		for (int i = 0; i < len; i++) {
-
-			VertexSet curr_edge = C0.elementAt(i);
-			Clique edge = new Clique(curr_edge.at(0), curr_edge.at(1));
-			Vector<Clique> C1 = allC_seed(edge, min_size, max_size);
-			//Vector<Clique> C2 = new Vector<Clique>();
-			for (int b = 0; b < C1.size(); b++) {
-				Clique c = C1.elementAt(b);
-				if (c.size() >= min_size) {
-					/*
-					 * if (c.size() > biggest_Clique) biggest_Clique = c.size();
-					 */
-					os.println(count + ", " + i + "," + c.size() + ", " + c.toFile());
-					count++;
-				}
-			}
-			if (count > Clique_Tester.MAX_CLIQUE) {
-				os.println("ERROR: too many cliques! - cutting off at " + Clique_Tester.MAX_CLIQUE
-						+ " for larger files change the default Clique_Tester.MAX_CLIQUE param");
-				i = len;
-			}
-			if (i % t == 0) {
-				System.out.print(".");
-			}
-		} // for
-		System.out.println();
-
-		os.close();
-		try {
-			fw.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
-	}
 
 	/**
 	 * this function simply add the clique (with no added intersection data) to
@@ -385,27 +496,6 @@ class Graph {
 	 * 
 	 * }
 	 */
-
-	Vector<Clique> allC_seed(Clique edge, int min_size, int max_size) {
-		Vector<Clique> ans = new Vector<Clique>();
-		ans.add(edge);
-		int i = 0;
-		// int size = 2;
-		while (ans.size() > i) {
-			Clique curr = ans.elementAt(i);
-			if (curr.size() < max_size) {
-				VertexSet Ni = curr.commonNi();
-				for (int a = 0; a < Ni.size(); a++) {
-					Clique c = new Clique(curr, Ni.at(a));
-					ans.add(c);
-				}
-			} else {
-				i = ans.size();
-			} // speedup trick
-			i++;
-		}
-		return ans;
-	}
 
 	// writing all cliques to .txt file
 	public void write2file() {
@@ -436,95 +526,11 @@ class Graph {
 		}
 	}
 
-	public void All_Cliques_DFS_2(String out_file, int min_size, int max_size) {
-		Clique.init(this);
-		_AllEdges = allEdges(); // all edges ï¿½ all cliques of size 2/
-		int len = _AllEdges.size();
-		System.out.println("|E|= " + len);
-		int count = 0;
-
-		FileWriter fw = null;
-		try {
-			fw = new FileWriter(out_file);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		PrintWriter os = new PrintWriter(fw);
-		// os.println("A");
-
-		String ll = "0%   20%   40%   60%   80%   100%";
-		int t = Math.max(1, len / ll.length());
-		if (Clique_Tester.Debug) {
-			System.out.println("Computing all cliques of size[" + min_size + "," + max_size + "] based on " + len
-					+ " edges graph, this may take a while");
-			System.out.println(ll);
-		}
-		os.println("All Cliques: file [min max] TH," + this._file_name + "," + min_size + ", " + max_size + ", "
-				+ this._TH);
-		os.println("index, edge, clique size, c0, c1, c2, c3, c4,  c5, c6, c7, c8, c9");
-		for (int i = 0; i < len; i++) {
-
-			VertexSet curr_edge = _AllEdges.elementAt(i);
-			Clique edge = new Clique(curr_edge.at(0), curr_edge.at(1));
-
-			if ((edge.clique().size()/* 2 */ + edge.commonNi().size()) >= min_size) {
-				Vector<Clique> C1 = allC_seed_2(edge, min_size, max_size);
-				for (int b = 0; b < C1.size(); b++) {
-					Clique c = C1.elementAt(b);
-					if (c.size() >= min_size) {
-						os.println(count + ", " + i + "," + c.size() + ", " + c.toFile());
-						count++;
-					}
-				}
-				if (count > Clique_Tester.MAX_CLIQUE) {
-					os.println("ERROR: too many cliques! - cutting off at " + Clique_Tester.MAX_CLIQUE
-							+ " for larger files change the default Clique_Tester.MAX_CLIQUE param");
-					i = len;
-				}
-			}
-
-			if (i % t == 0) {
-				System.out.print(".");
-			}
-		} // for
-		System.out.println();
-
-		os.close();
-		try {
-			fw.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-
-	Vector<Clique> allC_seed_2(Clique edge, int min_size, int max_size) {
-		Vector<Clique> ans = new Vector<Clique>();
-		ans.add(edge);
-		int i = 0;
-		// int size = 2;
-		while (ans.size() > i) {
-			Clique curr = ans.elementAt(i);
-			if (curr.size() < max_size) {
-				VertexSet Ni = curr.commonNi();
-				for (int a = 0; a < Ni.size(); a++) {
-					Clique c = new Clique(curr, Ni.at(a));
-
-					if ((c.clique().size() + c.commonNi().size()) >= min_size)
-						ans.add(c);
-				}
-			} else {
-				i = ans.size();
-			} // speedup trick
-			i++;
-		}
-		return ans;
-	}
-
 	/*
 	 * returns size of maximal clique
 	 */
 
-	int Main_Max_Clique(Clique edge, int min_size, int max_size) {
+	public int Main_Max_Clique(Clique edge, int min_size, int max_size) {
 		int ind = _AllEdges.size() - 1;
 		int MAX = 2;
 		while (ind >= 0) {
@@ -540,7 +546,7 @@ class Graph {
 	 * help function for Main_Max_Clique
 	 * 
 	 */
-	int max_per_edge(int max, Clique edge) {
+	private int max_per_edge(int max, Clique edge) {
 		int Answer = max;
 		Vector<Clique> ans = new Vector<Clique>();
 		ans.add(edge);
