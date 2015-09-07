@@ -11,15 +11,7 @@ import java.util.Queue;
 import java.util.StringTokenizer;
 import java.util.Vector;
 
-/*
-import clique_algo.Clique;
-import clique_algo.Clique_Tester;
-import clique_algo.VertexSet;
 
-
-import clique_algo.Clique;
-import clique_algo.VertexSet;
-*/
 /**
  * this class represents an undirected 0/1 sparse Graph
  * 
@@ -63,7 +55,7 @@ class Graph {
 	
 	public void All_Cliques_DFS(String out_file, int min_size, int max_size) {
 		Clique.init(this);
-		Vector<VertexSet>C0 = allEdges(); // all edges – all cliques of size 2/
+		Vector<VertexSet>C0 = allEdges(); // all edges ï¿½ all cliques of size 2/
 		int len = C0.size();
 		System.out.println("|E|= "+len);
 		int count = 0;
@@ -143,7 +135,7 @@ class Graph {
 	
 	public void All_Cliques_DFS_2(String out_file, int min_size, int max_size) {
 		Clique.init(this);
-		Vector<VertexSet>C0 = allEdges(); // all edges – all cliques of size 2/
+		Vector<VertexSet>C0 = allEdges(); // all edges ï¿½ all cliques of size 2/
 		int len = C0.size();
 		System.out.println("|E|= "+len);
 		int count = 0;
