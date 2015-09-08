@@ -1,5 +1,5 @@
 # clique_algo
-Clique Algo is a educational project which deals with finding cliques in a given vertex graph.
+Clique Algo is an educational project which deals with finding cliques in a given vertex graph.
 
 The project is based on an existing project and tries to take it a step forward by doing some code performance improving and expanding usage further on to inputting and outputting new graph formats.
 
