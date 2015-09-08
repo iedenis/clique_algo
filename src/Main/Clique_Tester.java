@@ -6,7 +6,7 @@ import java.util.Date;
 public class Clique_Tester {
 
 	public static int minQ = 3, maxQ = 10;
-	public static double TH = 0.8;
+	public static double TH = 0.75;
 	public static double TH1 = 0.01;
 	public static int sizeOfSClique=11;
 	public static String in_file = System.getProperty("user.dir") + "/src/test1.csv";
@@ -20,7 +20,11 @@ public class Clique_Tester {
 	public static boolean Convert = true;
 
 	public static void main(String[] args) throws IOException {
-
+		System.out.println("*****************************************************************************************************************************");
+		System.out.println("* In this project we make comparison between two functions: All_Cliques_DFS and All_Cliques_DFS_2 (improved All_Cliques_DFS)*"+
+						 "\n* and we work with two graph formats we are read from files                                                                 *");
+		System.out.println("*****************************************************************************************************************************");
+		
 		if (args == null || args.length < 3) {
 			help();
 		} else {
@@ -73,10 +77,10 @@ public class Clique_Tester {
 		printTestAll_Cliques_DFS(false);
 		initTest();	
 		
-		System.out.println("===============================================");
+		System.out.println("===========================================================================");
 		System.out.println("Our improved algorithm takes: "+(t3-t2)+ " ms\nWith the graph built from file -->> "+parseFileName(in_file1)+"\n"
-				+"==============================================\n"+
-				"\nWe've improved the algorithm in "+ (diff-(t3-t2))+" ms\n"+"==============================================\n");
+				+"===========================================================================\n"+
+				"\nWe've improved the algorithm in "+ (diff-(t3-t2))+" ms\n"+"===========================================================================\n");
 		System.out.println("The biggest clique in the graph is :"+G1.sizeOfBiggestClique(sizeOfSClique));
 		System.out.println("\n************************************************************************\n");
 		
@@ -93,7 +97,11 @@ public class Clique_Tester {
 		else
 			System.out.println("\n+++++++ All_Cliques_DFS_2 Test results: +++++++++++++++");
 
+		if(type)
 		System.out.println("All_Cliques_DFS:::::::");
+		else
+			System.out.println("All_Cliques_DFS_2:::::::");
+
 		System.out.println("forLen\t=" + Graph.forLen);
 		System.out.println("forC1\t=" + Graph.forC1);
 		System.out.println("ifCount\t=" + Graph.ifCount);
@@ -102,7 +110,7 @@ public class Clique_Tester {
 		System.out.println("whileEnter\t=" + Graph.whileEnter);
 		System.out.println("ifEnter\t=" + Graph.ifEnter);
 		System.out.println("forNi\t=" + Graph.forNi);
-		System.out.println("===============================================");
+		System.out.println("===========================================================================");
 	}
 	public static void initTest(){
 		Graph.forLen=0;
